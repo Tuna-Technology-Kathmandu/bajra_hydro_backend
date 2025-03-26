@@ -1,4 +1,3 @@
-
 const Blog = require("../models/Blog");
 const slugify = require("slugify");
 const blogValidation = require("../helper/blogValidator");
@@ -11,28 +10,23 @@ const createBlog = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const { title, content, author, categories, tags, imageUrl } = value;
-
-    const existing = await Blog.findOne({ title });
+    const existing = await Blog.findOne({ title: value.title });
     if (existing) {
-      return res.status(400).json({ message: "Blog with this title already exists" });
+      return res
+        .status(400)
+        .json({ message: "Blog with this title already exists" });
     }
 
-    const slug = slugify(title, { lower: true });
+    const slug = slugify(value.title, { lower: true });
 
     const newBlog = new Blog({
-      title,
+      ...value,
       slug,
-      content,
-      author,
-      categories,
-      tags,
-      imageUrl,
     });
 
     await newBlog.save();
 
-    res.status(201).json({ message: "Blog created", blog: newBlog });
+    res.status(201).json({ message: "Blog created" });
   } catch (error) {
     console.error("Create Blog Error:", error);
     res.status(500).json({ message: "Server error while creating blog" });
