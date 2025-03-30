@@ -20,9 +20,9 @@ const sendResetEmail = (to, resetToken) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.error("❌ Email sending failed:", error.message);
+      console.error("Email sending failed:", error.message);
     } else {
-      console.log("✅ Email sent:", info.response);
+      console.log("Email sent:", info.response);
     }
   });
 };

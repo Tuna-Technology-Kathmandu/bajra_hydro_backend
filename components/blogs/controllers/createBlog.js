@@ -1,8 +1,10 @@
 const Blog = require("../models/Blog");
 const slugify = require("slugify");
 const blogValidation = require("../helper/blogValidator");
+const multer = require("multer");
+const { storage } = require("../../../config/cloudinary");
+const upload = multer({ storage });
 
-// Create a blog
 const createBlog = async (req, res) => {
   try {
     const { error, value } = blogValidation.validate(req.body);
@@ -16,19 +18,24 @@ const createBlog = async (req, res) => {
     }
 
     const slug = slugify(value.title, { lower: true });
+    const imageUrl = req.file?.path || ""; 
 
     const newBlog = new Blog({
       ...value,
       slug,
+      imageUrl, 
     });
 
     await newBlog.save();
 
-    return res.status(201).json({ message: "Blog created" });
+    return res.status(201).json({
+      message: "Blog created",
+      newBlog,
+    });
   } catch (error) {
     console.error("Create Blog Error:", error);
     return res.status(500).json({ message: "Server error while creating blog" });
   }
 };
 
-module.exports = createBlog;
+module.exports = { createBlog, upload };

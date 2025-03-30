@@ -19,10 +19,6 @@ const blogValidation = Joi.object({
   tags: Joi.array().items(Joi.string()).required().messages({
     "any.required": "At least one tag is required"
   }),
-  imageUrl: Joi.string().uri().required().messages({
-    "string.uri": "Image must be a valid URL",
-    "string.empty": "Image URL is required"
-  })
-});
 
+});
 module.exports = blogValidation;

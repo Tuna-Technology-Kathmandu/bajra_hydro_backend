@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
 
-const createTestimonial = require("../controllers/createTestimonial");
+const { createTestimonial, upload } = require("../controllers/createTestimonial");
 const listAllTestimonials = require("../controllers/listAllTestimonials");
 const getSingleTestimonial = require("../controllers/getSingleTestimonial");
 const updateTestimonial = require("../controllers/updateTestimonial");
 const deleteTestimonial = require("../controllers/deleteTestimonial");
 
 // Create a new testimonial
-router.post("/", createTestimonial);
+router.post("/", upload.single("photo"), createTestimonial);
 
 // Get all testimonials
 router.get("/", listAllTestimonials);
