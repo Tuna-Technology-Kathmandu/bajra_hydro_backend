@@ -16,6 +16,7 @@ const createTestimonial = async (req, res) => {
     const newTestimonial = new Testimonial({
       ...value,
       photoUrl,
+      status: "pending"
     });
 
     await newTestimonial.save();

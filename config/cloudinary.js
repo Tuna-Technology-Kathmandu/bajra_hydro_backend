@@ -2,6 +2,7 @@ const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const dotenv = require("dotenv");
 
+dotenv.config(); 
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -9,12 +10,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: "bajra_blogs",
-    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    folder: "bajra-blogs", 
+    allowed_formats: ["jpg", "jpeg", "png", "webp", "pdf", "svg"],
   },
 });
 
-module.exports = { cloudinary, storage };
+module.exports = { cloudinary, storage};

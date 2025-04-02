@@ -19,6 +19,21 @@ const blogValidation = Joi.object({
   tags: Joi.array().items(Joi.string()).required().messages({
     "any.required": "At least one tag is required"
   }),
+  status: Joi.string().required().default("pending"),
+  additionalSpecification: Joi.object(
+    {
+      projectLocation: Joi.object({
+        title: Joi.string().required(),
+      }).required(),
+      gallery: Joi.object().required(),
+    },
+    {
+      projectAccess: Joi.object({
+        title: Joi.string().required(),
+      }).required(),
+      gallery: Joi.object().required(),
+    }
+  ).optional(),
 
 });
 module.exports = blogValidation;

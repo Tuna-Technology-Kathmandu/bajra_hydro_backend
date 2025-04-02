@@ -12,26 +12,30 @@ const createBlog = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const existing = await Blog.findOne({ title: value.title });
-    if (existing) {
-      return res.status(400).json({ message: "Blog with this title already exists" });
-    }
-
     const slug = slugify(value.title, { lower: true });
-    const imageUrl = req.file?.path || ""; 
+
+  
+    const imageUrl = req.files?.image?.[0]?.path || "";
+    
+    const galleryImages = req.files?.gallery?.map(file => file.path) || [];
 
     const newBlog = new Blog({
       ...value,
       slug,
-      imageUrl, 
+      imageUrl,
+      additionalSpecification: {
+        ...value.additionalSpecification,
+        gallery: galleryImages,
+      },
     });
 
     await newBlog.save();
 
     return res.status(201).json({
-      message: "Blog created",
+      message: "Blog created successfully",
       newBlog,
     });
+
   } catch (error) {
     console.error("Create Blog Error:", error);
     return res.status(500).json({ message: "Server error while creating blog" });
