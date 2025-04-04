@@ -22,7 +22,6 @@ const verifyToken = (req, res, next) => {
       return res.status(401).json({ message: "Invalid token." });
     }
 
-    // Other unforeseen JWT errors
     return res.status(403).json({ message: "Token verification failed." });
   }
 };

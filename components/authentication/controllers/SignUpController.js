@@ -3,25 +3,20 @@ const jwt = require("jsonwebtoken");
 const { registerValidation } = require("../helper/authValidator");
 const User = require("../../users/models/User");
 
-// Register User
 const registerUser = async (req, res) => {
   try {
-    // Validate input
     const { error, value } = registerValidation.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email: value.email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered." });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(value.password, 10);
 
-    // Create user
     const newUser = new User({
       ...value,
       password: hashedPassword,

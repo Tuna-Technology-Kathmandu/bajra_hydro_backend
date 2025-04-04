@@ -11,9 +11,6 @@ const blogSchema = new mongoose.Schema(
     tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
     imageUrl: { type: String, trim: true, default: "" },
     status: { type: String, enum: ["pending", "approved"], default: "pending", },
-    additionalSpecification: {
-      type: JSON,
-    }
   },
   { timestamps: true }
 );
