@@ -1,7 +1,7 @@
 const Team = require("../models/teamModel");
 const teamValidator = require("../helper/teamValidator");
 
-// Update a team member by ID
+
 const updateTeamMember = async (req, res) => {
   try {
     const { id } = req.params;
@@ -11,19 +11,22 @@ const updateTeamMember = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const updated = await Team.findByIdAndUpdate(id, value, { new: true });
-
-    if (!updated) {
+    const member = await Team.findById(id);
+    if (!member) {
       return res.status(404).json({ message: "Team member not found" });
     }
 
-    return res.status(200).json({
-      message: "Team member updated successfully",
-      updated,
-    });
+    member.set({ ...value });
+
+
+    member.status = "pending";
+
+    await member.save();
+
+    return res.status(200).json({ message: "Team member updated. Awaiting admin verification.", member });
   } catch (error) {
     console.error("Update Team Member Error:", error);
-    return res.status(500).json({ message: "Failed to update team member" });
+    return res.status(500).json({ message: "Error updating team member" });
   }
 };
 

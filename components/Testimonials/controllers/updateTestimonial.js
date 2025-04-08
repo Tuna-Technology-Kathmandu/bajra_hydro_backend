@@ -1,7 +1,7 @@
 const Testimonial = require("../models/testimonialModel");
 const testimonialValidator = require("../helper/testimonialValidator");
 
-// Update a testimonial by ID
+
 const updateTestimonial = async (req, res) => {
   try {
     const { id } = req.params;
@@ -11,15 +11,22 @@ const updateTestimonial = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const updated = await Testimonial.findByIdAndUpdate(id, value, { new: true });
-
-    if (!updated) {
+    const testimonial = await Testimonial.findById(id);
+    if (!testimonial) {
       return res.status(404).json({ message: "Testimonial not found" });
     }
 
+  
+    testimonial.set({ ...value });
+
+
+    testimonial.status = "pending";
+
+    await testimonial.save();
+
     return res.status(200).json({
-      message: "Testimonial updated successfully",
-      updated,
+      message: "Testimonial updated successfully. Awaiting admin approval.",
+      testimonial,
     });
   } catch (error) {
     console.error("Update Testimonial Error:", error);

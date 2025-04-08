@@ -1,6 +1,5 @@
 const Team = require("../models/teamModel");
 
-// Get a single team member by ID
 const getSingleTeamMember = async (req, res) => {
   try {
     const { id } = req.params;

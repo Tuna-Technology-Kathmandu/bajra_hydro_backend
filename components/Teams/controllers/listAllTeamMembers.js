@@ -1,9 +1,8 @@
 const Team = require("../models/teamModel");
 
-// Get all team members
 const listAllTeamMembers = async (req, res) => {
   try {
-    const members = await Team.find().sort({ createdAt: -1 });
+    const members = await Team.find({ status: "approved" }).sort({ createdAt: -1 });
 
     return res.status(200).json(members);
   } catch (error) {

@@ -1,10 +1,12 @@
 const Joi = require("joi");
 
 const resetPasswordValidation = Joi.object({
-  resetToken: Joi.string()
+  email: Joi.string()
+    .email()
     .required()
     .messages({
-      "string.empty": "Reset token is required"
+      "string.empty": "Email is required",
+      "string.email": "Please enter a valid email address"
     }),
 
   newPassword: Joi.string()
@@ -17,6 +19,12 @@ const resetPasswordValidation = Joi.object({
       'string.min': 'Password must be at least 8 characters',
       'string.max': 'Password must be at most 128 characters',
       'string.pattern.base': 'Password must contain at least one letter and one number'
+    }),
+
+  resetToken: Joi.string()
+    .required()
+    .messages({
+      "string.empty": "Reset token is required"
     })
 });
 
