@@ -32,8 +32,34 @@ const userSchema = new mongoose.Schema({
     default: uuidv4,
     unique: true,
   },
+  is_security_qxn_added: {
+    type: Boolean,
+    default: false,
+  },
+  securityData: {
+    questions: {
+      type: [
+        {
+          question: { type: String, required: true },
+          answer: { type: String, required: true } // hashed
+        }
+      ],
+      validate: {
+        validator: function (value) {
+          return Array.isArray(value) && value.length === 3;
+        },
+        message: '3 security questions and answers are required.'
+      }
+    },
+    expirydate: {
+      type: Date,
+      required: function () {
+        return this.is_security_qxn_added;
+      }
+    }
+  },
   resetPasswordToken: {
-    type:String,
+    type: String,
     default: null
   },
   resetPasswordExpires: {
@@ -41,5 +67,22 @@ const userSchema = new mongoose.Schema({
     default: null
   }
 }, { timestamps: true });
+
+
+userSchema.pre("save", function (next) {
+  if (this.is_security_qxn_added) {
+    if (
+      !this.securityData ||
+      !this.securityData.questions ||
+      this.securityData.questions.length !== 3
+    ) {
+      return next(new Error("3 security questions must be provided."));
+    }
+    if (!this.securityData.expirydate) {
+      return next(new Error("Security question expiry date is required."));
+    }
+  }
+  next();
+});
 
 module.exports = mongoose.model('User', userSchema);

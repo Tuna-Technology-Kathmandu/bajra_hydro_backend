@@ -1,45 +1,47 @@
-const crypto = require("crypto");
+const { v4: uuidv4 } = require("uuid");
 const User = require("../../users/models/User");
 const { forgotPasswordValidation } = require("../helper/forgotPasswordValidator");
-const sendResetEmail = require("../helper/sendEmail");
 
-
-// Forgot Password Controller
 const forgotPassword = async (req, res) => {
   try {
-    // Validate email input
     const { error, value } = forgotPasswordValidation.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const { email } = value;
+    const { email, answers } = value;
 
-    // Check if user exists
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "User with this email not found." });
+    if (!user || !user.securityData || !user.securityData.questions) {
+      return res.status(404).json({ message: "User or security data not found." });
+    }
+    const storedQuestions = user.securityData.questions;
+
+    for (const { question, answer } of answers) {
+      const stored = storedQuestions.find(q => q.question === question);
+      if (!stored) {
+        return res.status(401).json({ message: `Invalid question: "${question}".` });
+      }
+
+      if (answer.trim().toLowerCase() !== stored.answer.trim().toLowerCase()) {
+        return res.status(401).json({ message: `Incorrect answer for: "${question}".` });
+      }
     }
 
-    // Generate secure token
-    const resetToken = crypto.randomBytes(32).toString("hex");
-
-    // Set token and expiry (15 minutes)
+    const resetToken = uuidv4();
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
+    user.resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000); 
+
     await user.save();
-    
-    sendResetEmail(email, resetToken);
 
-    // Respond via email)
-      res.status(200).json({
-        message: "Password reset token generated successfully.",
-        resetToken,
-      });
+    return res.status(200).json({
+      message: "Security answers verified. Use this token to reset your password.",
+      token: resetToken,
+    });
 
-  } catch (error) {
-    console.error("Forgot password error:", error);
-    res.status(500).json({ message: "Server error during password reset." });
+  } catch (err) {
+    console.error("Forgot password error:", err);
+    return res.status(500).json({ message: "Server error during verification." });
   }
 };
 

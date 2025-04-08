@@ -4,7 +4,6 @@ const multer = require("multer");
 const { storage } = require("../../../config/cloudinary");
 const upload = multer({ storage }); 
 
-// Create a team member
 const createTeamMember = async (req, res) => {
   try {
     const { error, value } = teamValidator.validate(req.body);

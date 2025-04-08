@@ -14,7 +14,7 @@ const verifyTeamMember = require("../controllers/verifyTeamMember");
 
 router.post("/", verifyToken, checkRole("admin", "editor"), upload.single("photo"), createTeamMember);
 router.get("/", listAllTeamMembers);
-router.get("/:id", getSingleTeamMember);
+router.get("/", getSingleTeamMember);
 router.put("/:id", verifyToken, checkRole("admin", "editor"), updateTeamMember);
 router.put("/verify/:id", verifyToken, checkRole("admin"), verifyTeamMember);
 router.delete("/:id", verifyToken, checkRole("admin"), deleteTeamMember);
