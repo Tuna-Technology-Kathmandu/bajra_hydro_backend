@@ -1,3 +1,4 @@
+const { required } = require("joi");
 const mongoose = require("mongoose");
 
 const contactSchema = new mongoose.Schema(
@@ -18,6 +19,7 @@ const contactSchema = new mongoose.Schema(
       type: String,
       default: "",
       trim: true,
+      required: true,
     },
     message: {
       type: String,
