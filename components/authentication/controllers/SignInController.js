@@ -9,7 +9,7 @@ const loginUser = async (req, res) => {
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
-
+    
     const user = await User.findOne({ email: value.email });
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
@@ -18,6 +18,13 @@ const loginUser = async (req, res) => {
     const isMatch = await bcrypt.compare(value.password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    if (!user.is_security_qxn_added) {
+      return res.status(200).json({
+        message: "Please set your security questions.",
+        firstTimeLogin: true
+      });
     }
 
     const token = jwt.sign(
@@ -31,13 +38,14 @@ const loginUser = async (req, res) => {
 
     res.cookie('auth_token', token);
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Login successful",
       token,
     });
+
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).json({ message: "Server error during login" });
+    return res.status(500).json({ message: "Server error during login" });
   }
 };
 

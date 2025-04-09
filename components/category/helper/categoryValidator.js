@@ -10,6 +10,7 @@ const categoryValidation = Joi.object({
       "string.min": "Category name must be at least 2 characters",
       "string.max": "Category name must not exceed 50 characters",
     }),
+  
 });
 
 module.exports = categoryValidation;

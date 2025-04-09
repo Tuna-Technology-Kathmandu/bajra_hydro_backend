@@ -36,29 +36,8 @@ const registerValidation = Joi.object({
     .optional()
     .messages({
       'any.only': 'Role must be admin, editor, or subscriber'
-    }),
+    })
 
-  securityData: Joi.object({
-    questions: Joi.array()
-      .items(
-        Joi.object({
-          question: Joi.string().required().messages({
-            'string.empty': 'Each question must be a valid string'
-          }),
-          answer: Joi.string().min(1).required().messages({
-            'string.empty': 'Answer to each question is required'
-          })
-        })
-      )
-      .length(3)
-      .required()
-      .messages({
-        'array.length': 'Exactly 3 security questions and answers must be provided.',
-        'array.base': 'Questions must be an array of objects with question and answer.'
-      })
-  }).required().messages({
-    'any.required': 'Security questions must be provided.'
-  })
 });
 
 module.exports = registerValidation;

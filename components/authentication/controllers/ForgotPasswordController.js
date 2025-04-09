@@ -11,11 +11,13 @@ const forgotPassword = async (req, res) => {
 
     const { email, answers } = value;
 
+    // Find the user by email
     const user = await User.findOne({ email });
-    if (!user || !user.securityData || !user.securityData.questions) {
+    if (!user || !user.securityQuestions || user.securityQuestions.length === 0) {
       return res.status(404).json({ message: "User or security data not found." });
     }
-    const storedQuestions = user.securityData.questions;
+
+    const storedQuestions = user.securityQuestions; 
 
     for (const { question, answer } of answers) {
       const stored = storedQuestions.find(q => q.question === question);

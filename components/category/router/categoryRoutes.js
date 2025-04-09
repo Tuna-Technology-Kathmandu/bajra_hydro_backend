@@ -12,7 +12,7 @@ const deleteCategory = require("../controllers/deleteCategory");
 
 router.post("/", verifyToken, checkRole("admin", "editor"), createCategory);
 
-router.get("/", verifyToken, checkRole("admin", "editor"), listAllCategories);
+router.get("/", listAllCategories);
 
 router.get("/:id", verifyToken, checkRole("admin", "editor"), getSingleCategory);
 

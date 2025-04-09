@@ -34,29 +34,15 @@ const userSchema = new mongoose.Schema({
   },
   is_security_qxn_added: {
     type: Boolean,
-    default: false,
+    default: false, 
   },
-  securityData: {
-    questions: {
-      type: [
-        {
-          question: { type: String, required: true },
-          answer: { type: String, required: true } // hashed
-        }
-      ],
-      validate: {
-        validator: function (value) {
-          return Array.isArray(value) && value.length === 3;
-        },
-        message: '3 security questions and answers are required.'
-      }
-    },
-    expirydate: {
-      type: Date,
-      required: function () {
-        return this.is_security_qxn_added;
-      }
-    }
+  securityQuestions: [{
+    question: { type: String },
+    answer: { type: String } 
+  }],
+  securityQuestionsUpdatedAt: {
+    type: Date, 
+    default: null
   },
   resetPasswordToken: {
     type: String,
@@ -68,19 +54,18 @@ const userSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-
-userSchema.pre("save", function (next) {
+userSchema.pre('save', function(next) {
   if (this.is_security_qxn_added) {
-    if (
-      !this.securityData ||
-      !this.securityData.questions ||
-      this.securityData.questions.length !== 3
-    ) {
-      return next(new Error("3 security questions must be provided."));
+
+    if (!this.securityQuestions || this.securityQuestions.length !== 3) {
+      return next(new Error("You must provide exactly 3 security questions and answers."));
     }
-    if (!this.securityData.expirydate) {
-      return next(new Error("Security question expiry date is required."));
-    }
+
+    this.securityQuestions.forEach((item) => {
+      item.answer = item.answer.trim(); 
+    });
+
+    this.securityQuestionsUpdatedAt = new Date();
   }
   next();
 });
