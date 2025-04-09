@@ -1,8 +1,6 @@
+const bcrypt = require("bcryptjs");
 const User = require("../../users/models/User");
 const { registerValidation } = require("../helper/authValidator");
-const { predefinedSecurityQuestions } = require("./SecurityQuestion");
-const bcrypt = require("bcryptjs");
-
 
 const registerUser = async (req, res) => {
   try {
@@ -11,39 +9,19 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const { fullname, email, password, role, securityData } = value;
+    const { email, password, role } = value;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(409).json({ message: "User with this email already exists." });
     }
-
-    const areAllQuestionsValid = securityData.questions.every(q =>
-      predefinedSecurityQuestions.includes(q.question)
-    );
-    if (!areAllQuestionsValid) {
-      return res.status(400).json({ message: "One or more selected security questions are invalid." });
-    }
-
-    const plainTextQuestions = securityData.questions.map(({ question, answer }) => {
-      return { question, answer: answer.trim() }; 
-    });
-
-    const expirydate = new Date();
-    expirydate.setMonth(expirydate.getMonth() + 1);
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
-      fullname,
-      email,
-      password: hashedPassword,
-      role: role || "subscriber",
-      is_security_qxn_added: true,
-      securityData: {
-        questions: plainTextQuestions, 
-        expirydate
-      }
+      ...value, 
+      password: hashedPassword, 
+      is_security_qxn_added: false,  
+      securityQuestionsUpdatedAt: null 
     });
 
     await newUser.save();

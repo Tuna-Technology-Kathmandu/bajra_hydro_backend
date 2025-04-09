@@ -10,7 +10,6 @@ const createCategory = async (req, res) => {
     }
     const { name } = {
       ...value,
-      author,
     };
 
     const existing = await Category.findOne({ name });
