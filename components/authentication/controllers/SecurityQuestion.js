@@ -19,7 +19,7 @@ exports.getSecurityQuestions = (req, res) => {
 };
 
 const securityQuestionsValidation = Joi.object({
-  userId: Joi.string().required(),
+  email: Joi.string().email().required(),
   securityQuestions: Joi.array()
     .items(
       Joi.object({
@@ -27,7 +27,7 @@ const securityQuestionsValidation = Joi.object({
         answer: Joi.string().min(1).required()
       })
     )
-    .unique((a, b) => a.question === b.question) 
+    .unique((a, b) => a.question === b.question)
     .messages({
       "array.base": "Security questions are required.",
       "array.empty": "Please provide answers to the security questions.",
@@ -43,20 +43,27 @@ exports.setSecurityQuestions = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const { userId, securityQuestions } = value;
-
-    const user = await User.findById(userId);
+    const { email, securityQuestions } = value;
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
 
+    const areValidQuestions = securityQuestions.every(({ question }) =>
+      predefinedSecurityQuestions.includes(question)
+    );
+
+    if (!areValidQuestions) {
+      return res.status(400).json({ message: "One or more security questions are invalid." });
+    }
+
     const plainQuestions = securityQuestions.map(({ question, answer }) => {
-      return { question, answer }; 
+      return { question, answer };
     });
 
     user.securityQuestions = plainQuestions;
-    user.is_security_qxn_added = true; 
-    user.securityQuestionsUpdatedAt = new Date(); 
+    user.is_security_qxn_added = true;
+    user.securityQuestionsUpdatedAt = new Date();
 
     await user.save();
 

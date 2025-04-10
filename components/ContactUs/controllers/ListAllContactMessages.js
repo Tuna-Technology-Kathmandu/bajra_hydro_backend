@@ -5,6 +5,7 @@ const listAllContactMessages = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
+    const sortOrder = req.query.sort === "asc" ? 1 : -1; 
 
     const search = req.query.search || "";
 
@@ -13,9 +14,12 @@ const listAllContactMessages = async (req, res) => {
       : {}; 
 
     const messages = await Contact.find(searchQuery)
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: sortOrder })
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .lean();
+
+
 
     const totalMessages = await Contact.countDocuments(searchQuery);
 

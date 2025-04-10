@@ -19,6 +19,7 @@ const contactUsValidator = Joi.object({
     }),
 
     subject: Joi.string()
+    .required()
     .max(150)
     .allow("")
     .messages({

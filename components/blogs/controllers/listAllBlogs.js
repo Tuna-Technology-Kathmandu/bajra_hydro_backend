@@ -5,6 +5,7 @@ const listAllBlogs = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
+    const sortOrder = req.query.sort === "asc" ? 1 : -1; 
 
     const search = req.query.search || "";
 
@@ -16,9 +17,10 @@ const listAllBlogs = async (req, res) => {
       .populate("author", "fullname email")
       .populate("categories", "name slug")
       .populate("tags", "name slug")
-      .sort({ createdAt: -1 }) 
+      .sort({ createdAt: sortOrder })
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .lean();
 
     const totalBlogs = await Blog.countDocuments(searchQuery);
 
