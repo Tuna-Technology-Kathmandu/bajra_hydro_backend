@@ -5,16 +5,18 @@ const listAllReports = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-    const sortOrder = req.query.sort === "asc" ? 1 : -1; 
+    const sortOrder = req.query.sort === "asc" ? 1 : -1;
 
     const search = req.query.search || "";
+    const searchQuery = {};
 
-    const searchQuery = search
-      ? { title: { $regex: search, $options: "i" } }
-      : {};
+    if (search) {
+      searchQuery.title = { $regex: search, $options: "i" };
+    }
+
 
     const reports = await Report.find(searchQuery)
-      .sort({ createdAt: sortOrder}) 
+      .sort({ createdAt: sortOrder })
       .skip(skip)
       .limit(limit)
       .lean();

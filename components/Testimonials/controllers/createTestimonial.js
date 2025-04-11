@@ -11,12 +11,11 @@ const createTestimonial = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const photoUrl = req.file?.path || "";
+    const photo_url = req.file?.path || "";
 
     const newTestimonial = new Testimonial({
       ...value,
-      photoUrl,
-      status: "pending"
+      photo_url
     });
 
     await newTestimonial.save();

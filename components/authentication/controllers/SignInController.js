@@ -9,7 +9,7 @@ const loginUser = async (req, res) => {
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
-    
+
     const user = await User.findOne({ email: value.email });
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
@@ -27,20 +27,25 @@ const loginUser = async (req, res) => {
       });
     }
 
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       { unique_id: user.unique_id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || "15m" }
     );
 
+    const refreshToken = jwt.sign(
+      { unique_id: user.unique_id },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "7d" }
+    );
+
     user.lastLogin = new Date();
     await user.save();
 
-    res.cookie('auth_token', token);
-
     return res.status(200).json({
       message: "Login successful",
-      token,
+      accessToken,
+      refreshToken
     });
 
   } catch (error) {

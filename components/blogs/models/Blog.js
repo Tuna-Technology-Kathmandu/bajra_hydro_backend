@@ -9,7 +9,7 @@ const blogSchema = new mongoose.Schema(
     author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     categories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Category" }],
     tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
-    imageUrl: { type: String, trim: true, default: "" },
+    image_url: { type: String, trim: true, default: "" },
     status: { type: String, enum: ["pending", "approved"], default: "pending", },
   },
   { timestamps: true }

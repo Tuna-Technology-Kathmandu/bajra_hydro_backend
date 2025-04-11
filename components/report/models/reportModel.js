@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const { required } = require("joi");
+const mongoose = require("mongoose");
 
 const reportSchema = new mongoose.Schema(
   {
@@ -7,34 +8,34 @@ const reportSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    jobCategory: {
-      type: String,
-      required: true,
-    },
-    careerLevel: {
-      type: String,
-      required: true,
-    },
-    location: {
-      type: String,
-      required: true,
-    },
     description: {
       type: String,
       required: true,
+      trim: true,
     },
-    postedDate: {
-      type: Date,
-      default: Date.now,
-    },
-    availabilty: {
+    fiscal_year: {
       type: String,
       required: true,
+      match: [/^\d{4}\/\d{2}$/, "Fiscal year must be in format YYYY/YY"], 
     },
-    
+    quarter: {
+      type: String,
+      enum: ["Quarter-1", "Quarter-2", "Quarter-3", "Quarter-4"],
+      required: true,
+    },
+    file: { 
+      type: String, 
+      trim: true, 
+      default: "" 
+    },
+    status: {
+      type: String, 
+      enum: ["pending", "approved"], 
+      default: "pending", 
+    },
+
   },
   { timestamps: true }
 );
 
-
-module.exports = mongoose.model('Report', reportSchema);
+module.exports = mongoose.model("Report", reportSchema);

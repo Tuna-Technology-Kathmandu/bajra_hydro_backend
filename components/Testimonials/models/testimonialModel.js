@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const testimonialSchema = new mongoose.Schema(
   {
-    fullname: {
+    full_name: {
       type: String,
       required: [true, "Full name is required"],
       trim: true,
@@ -13,7 +13,7 @@ const testimonialSchema = new mongoose.Schema(
       trim: true,
       maxlength: [1000, "Description must be at most 1000 characters"],
     },
-    photoUrl: {
+    photo_url: {
       type: String,
       default: "",
       trim: true,

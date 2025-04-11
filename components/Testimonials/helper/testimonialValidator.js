@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 const testimonialValidator = Joi.object({
-  fullname: Joi.string()
+  full_name: Joi.string()
     .min(3)
     .max(100)
     .required()
@@ -21,7 +21,7 @@ const testimonialValidator = Joi.object({
       "string.max": "Message must be at most 1000 characters",
     }),
 
-  photoUrl: Joi.string()
+  photo_url: Joi.string()
     .uri()
     .allow("")
     .messages({
