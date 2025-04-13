@@ -41,6 +41,14 @@ router.use("/users", userRoutes);
 const jobRoutes = require("../components/JobsAvailable/routers/jobRoutes"); 
 router.use("/jobs", jobRoutes); 
 
+// Milestone Routes
+const milestoneRoutes = require("../components/milestone/routers/milestoneRoutes");
+router.use("/milestones", milestoneRoutes);
+
+//CEO Message Routes
+const ceoMessageRoutes = require("../components/CEO_message/routers/CEOMEssageRoutes");
+router.use("/ceo-message", ceoMessageRoutes);
+
 // Base route check
 router.get("/", (req, res) => {
   res.send("API is running...");

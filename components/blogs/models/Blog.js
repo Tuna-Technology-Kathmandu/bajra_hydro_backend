@@ -10,7 +10,8 @@ const blogSchema = new mongoose.Schema(
     categories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Category" }],
     tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
     image_url: { type: String, trim: true, default: "" },
-    status: { type: String, enum: ["pending", "approved"], default: "pending", },
+    status: {type: String, enum: ["pending", "approved"], default: "pending",},
+    is_featured: { type: Boolean, default: false }, 
   },
   { timestamps: true }
 );

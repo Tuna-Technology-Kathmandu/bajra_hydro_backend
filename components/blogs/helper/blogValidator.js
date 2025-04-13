@@ -19,6 +19,7 @@ const blogValidation = Joi.object({
   tags: Joi.array().items(Joi.string()).required().messages({
     "any.required": "At least one tag is required"
   }),
+  is_featured: Joi.boolean().required(),
   status: Joi.string().required().default("pending"),
   additionalSpecification: Joi.object(
     {
