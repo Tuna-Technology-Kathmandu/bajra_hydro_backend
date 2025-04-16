@@ -1,6 +1,5 @@
 const Blog = require("../models/Blog");
 
-// Get a single blog by ID
 const getSingleBlog = async (req, res) => {
   try {
     const { id } = req.params;

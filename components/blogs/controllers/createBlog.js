@@ -20,7 +20,7 @@ const createBlog = async (req, res) => {
       return res.status(400).json({ message: "At least one image is required" });
     }
 
-    const imageUrl = uploadedImages[0].path; 
+    const image_url = uploadedImages[0].path; 
     const gallery = uploadedImages.slice(1).map(file => file.path); 
 
     const slug = slugify(value.title, { lower: true });
@@ -28,7 +28,7 @@ const createBlog = async (req, res) => {
     const newBlog = new Blog({
       ...value,
       slug,
-      imageUrl,
+      image_url,
       gallery, 
     });
 

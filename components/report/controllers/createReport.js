@@ -2,18 +2,21 @@ const Report = require("../models/reportModel");
 const reportValidator = require("../helper/reportValidator");
 const multer = require("multer");
 const { storage } = require("../../../config/cloudinary");
-const upload = multer({ storage });  
+const upload = multer({ storage });
 
-// Create a report
 const createReport = async (req, res) => {
   try {
-    
     const { error, value } = reportValidator.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const fileUrl = req.file?.path || ""; 
+    const existingReport = await Report.findOne({ title: value.title });
+    if (existingReport) {
+      return res.status(409).json({ message: "A report with this title already exists." });
+    }
+
+    const fileUrl = req.file?.path || "";
 
     if (!fileUrl) {
       return res.status(400).json({ message: '"file" is required' });
@@ -21,7 +24,7 @@ const createReport = async (req, res) => {
 
     const newReport = new Report({
       ...value,
-      file: fileUrl, 
+      file: fileUrl,
     });
 
     await newReport.save();
@@ -30,9 +33,11 @@ const createReport = async (req, res) => {
       message: "Report created successfully.",
       newReport,
     });
+
   } catch (error) {
     console.error("Create Report Error:", error);
     return res.status(500).json({ message: "Server error while creating report" });
   }
 };
+
 module.exports = { createReport, upload };

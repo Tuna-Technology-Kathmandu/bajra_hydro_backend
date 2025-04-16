@@ -11,7 +11,6 @@ const createJob = async (req, res) => {
 
     const newJob = new Job({
       ...value,  
-      status: value.status || 'pending',  
     });
 
     await newJob.save();

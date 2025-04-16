@@ -8,12 +8,12 @@ const jobSchema = new mongoose.Schema(
       trim: true,
     },
 
-    jobCategory: {
+    job_category: {
       type: String,
       enum: ['Full-time', 'Part-Time', 'Freelance', 'Contract'],
     },
 
-    careerLevel: {
+    career_level: {
       type: String,
       enum: ['Entry Level', 'Mid Level', 'Junior Level', 'Senior Level'],
     },
@@ -28,17 +28,22 @@ const jobSchema = new mongoose.Schema(
       required: true,
     },
 
-    postedDate: {
+    deadline: {
       type: Date,
-      default: Date.now,
+      required: true,
+    },
+
+    no_of_vacancy: {
+      type: Number,
+      required: true,
+      min: 1,
     },
 
     status: {
       type: String,
       enum: ['pending', 'approved'],
-      default: 'pending',  
+      default: 'pending',
     },
-
   },
   { timestamps: true }
 );
