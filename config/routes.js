@@ -49,6 +49,10 @@ router.use("/milestones", milestoneRoutes);
 const ceoMessageRoutes = require("../components/CEO_message/routers/CEOMEssageRoutes");
 router.use("/ceo-message", ceoMessageRoutes);
 
+//Subscriber Routes
+const subscriberRoutes = require("../components/subscriber/routers/subscriberRoutes");
+router.use("/subscribers", subscriberRoutes);
+
 // Base route check
 router.get("/", (req, res) => {
   res.send("API is running...");
