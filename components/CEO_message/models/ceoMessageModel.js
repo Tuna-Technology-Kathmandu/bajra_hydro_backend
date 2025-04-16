@@ -7,6 +7,11 @@ const ceoMessageSchema = new mongoose.Schema(
       required: [true, "Name is required"],
       trim: true,
     },
+    position: {
+      type: String,
+      required: [true, "Position is required"],  
+      trim: true,
+    },
     photo: {
       type: String,
       trim: true,

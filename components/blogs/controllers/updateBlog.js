@@ -1,7 +1,6 @@
 const Blog = require("../models/Blog");
 const slugify = require("slugify");
 
-// Update a blog 
 const updateBlog = async (req, res) => {
   try {
     const { id } = req.params;

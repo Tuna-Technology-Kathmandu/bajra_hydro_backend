@@ -9,15 +9,18 @@ const listAllCEOMessages = async (req, res) => {
     const sortOrder = req.query.sort === "asc" ? 1 : -1;
 
     const search = req.query.search || "";
-    const searchQuery = search
-      ? { name: { $regex: search, $options: "i" } } 
-      : {};
+    const position = req.query.position || ""; 
+
+    const searchQuery = {
+      ...(search && { name: { $regex: search, $options: "i" } }), 
+      ...(position && { position: { $regex: position, $options: "i" } }), 
+    };
 
     const messages = await CEOMessage.find(searchQuery)
-      .sort({ createdAt: sortOrder }) 
-      .skip(skip) 
-      .limit(limit) 
-      .lean(); 
+      .sort({ createdAt: sortOrder })
+      .skip(skip)
+      .limit(limit)
+      .lean();
 
     const totalMessages = await CEOMessage.countDocuments(searchQuery);
 
