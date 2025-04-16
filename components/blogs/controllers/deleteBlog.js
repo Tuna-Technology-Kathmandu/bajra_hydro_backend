@@ -1,6 +1,5 @@
 const Blog = require("../models/Blog");
 
-// Delete a blog 
 const deleteBlog = async (req, res) => {
   try {
     const { id } = req.params;

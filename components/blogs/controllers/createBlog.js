@@ -29,7 +29,7 @@ const createBlog = async (req, res) => {
       ...value,
       slug,
       image_url,
-      gallery, 
+      gallery
     });
 
     await newBlog.save();

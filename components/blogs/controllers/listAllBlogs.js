@@ -5,12 +5,18 @@ const listAllBlogs = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-    const sortOrder = req.query.sort === "asc" ? 1 : -1; 
-
+    const sortOrder = req.query.sort === "asc" ? 1 : -1;
+    
     const search = req.query.search || "";
-
+    const status = req.query.status || ""; 
+    const category = req.query.category || ""; 
+    const tag = req.query.tag || ""; 
+   
     const searchQuery = {
-      title: { $regex: search, $options: "i" }
+      title: { $regex: search, $options: "i" }, 
+      ...(status && { status: status }), 
+      ...(category && { categories: category }), 
+      ...(tag && { tags: tag }) 
     };
 
     const blogs = await Blog.find(searchQuery)
