@@ -17,8 +17,14 @@ const contactUsValidator = Joi.object({
       'string.empty': 'Email is required',
       'string.email': 'Please enter a valid email address'
     }),
-
-    subject: Joi.string()
+    phone: Joi.string()
+    .pattern(/^[0-9]{7,15}$/)
+    .required()
+    .messages({
+      'string.empty': 'Phone number is required',
+      'string.pattern.base': 'Phone number must only contain 7-15 digits and no letters or symbols',
+    }),  
+  subject: Joi.string()
     .required()
     .max(150)
     .allow("")

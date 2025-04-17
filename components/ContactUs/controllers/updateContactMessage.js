@@ -1,6 +1,5 @@
 const Contact = require("../models/contactUsModel");
 
-// Update contact message status
 const updateContactMessage = async (req, res) => {
   try {
     const { id } = req.params;

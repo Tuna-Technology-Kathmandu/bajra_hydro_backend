@@ -15,6 +15,13 @@ const contactSchema = new mongoose.Schema(
       trim: true,
       match: [/\S+@\S+\.\S+/, "Please use a valid email address"],
     },
+    phone: {
+      type: String,
+      required: [true, "Phone number is required"],
+      trim: true,
+      minlength: [7, "Phone number must be at least 7 digits"],
+      maxlength: [15, "Phone number must not exceed 15 digits"],
+    },
     subject: {
       type: String,
       default: "",
