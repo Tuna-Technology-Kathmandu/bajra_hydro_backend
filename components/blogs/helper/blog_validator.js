@@ -13,7 +13,7 @@ const blogValidation = Joi.object({
   author: Joi.string().required().messages({
     "string.empty": "Author is required"
   }),
-  categories: Joi.array().items(Joi.string()).required().messages({
+  categories: Joi.string().required().messages({
     "any.required": "At least one category is required"
   }),
   tags: Joi.array().items(Joi.string()).required().messages({

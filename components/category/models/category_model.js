@@ -13,6 +13,10 @@ const categorySchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
   },
+  sub_category: {
+    type: String,
+    trim: true,
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model("Category", categorySchema);
