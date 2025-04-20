@@ -29,17 +29,17 @@ router.use("/team", teamRoutes);
 const testimonialRoutes = require("../components/testimonials/routers/testimonial_routes.js");
 router.use("/testimonials", testimonialRoutes);
 
-// Report Routes 
-const reportRoutes = require("../components/report/routers/report_routes.js"); 
-router.use("/reports", reportRoutes); 
+// Report Routes
+const reportRoutes = require("../components/report/routers/report_routes.js");
+router.use("/reports", reportRoutes);
 
-// User Routes 
-const userRoutes = require("../components/users/routers/user_routes.js"); 
-router.use("/users", userRoutes); 
+// User Routes
+const userRoutes = require("../components/users/routers/user_routes.js");
+router.use("/users", userRoutes);
 
 // Job Routes
-const jobRoutes = require("../components/jobs_available/routers/job_routes.js"); 
-router.use("/jobs", jobRoutes); 
+const jobRoutes = require("../components/jobs_available/routers/job_routes.js");
+router.use("/jobs", jobRoutes);
 
 // Milestone Routes
 const milestoneRoutes = require("../components/milestone/routers/milestone_routes.js");
@@ -65,5 +65,8 @@ router.use("/company-info", companyInfoRoutes);
 router.get("/", (req, res) => {
   res.send("API is running...");
 });
+
+const search = require("../SearchItems.js");
+router.get("/search", search);
 
 module.exports = router;
