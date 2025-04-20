@@ -4,7 +4,10 @@ const getBlogBySlug = async (req, res) => {
   try {
     const { slug } = req.params;
 
-    const blog = await Blog.findOne({ slug });
+    const blog = await Blog.findOne({ slug })
+      .populate("author", "fullname email")
+      .populate("categories", "name slug")
+      .populate("tags", "name slug");
     if (!blog) {
       return res.status(404).json({ message: "Blog not found" });
     }
