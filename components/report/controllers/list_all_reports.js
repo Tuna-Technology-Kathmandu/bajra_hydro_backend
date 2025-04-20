@@ -4,6 +4,7 @@ const listAllReports = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
+    const status = req.query.status || "approved";
     const skip = (page - 1) * limit;
     const sortOrder = req.query.sort === "asc" ? 1 : -1;
 
@@ -14,6 +15,9 @@ const listAllReports = async (req, res) => {
       searchQuery.title = { $regex: search, $options: "i" };
     }
 
+    if (status) {
+      searchQuery.status = status;
+    }
 
     const reports = await Report.find(searchQuery)
       .sort({ createdAt: sortOrder })

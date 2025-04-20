@@ -2,25 +2,14 @@ const mongoose = require('mongoose');
 
 const jobSchema = new mongoose.Schema(
   {
-    position: {
-      type: String,
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
       required: true,
-      trim: true,
     },
-
-    job_category: {
-      type: String,
-      enum: ['Full-time', 'Part-Time', 'Freelance', 'Contract'],
-    },
-
     career_level: {
       type: String,
       enum: ['Entry Level', 'Mid Level', 'Junior Level', 'Senior Level'],
-    },
-
-    location: {
-      type: String,
-      enum: ['On-site', 'Remote', 'Hybrid'],
     },
 
     description: {
