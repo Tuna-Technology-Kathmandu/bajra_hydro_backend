@@ -1,5 +1,4 @@
 const Blog = require("../models/blog_model");
-const Category = require("../../category/models/category_model");
 
 const listAllBlogs = async (req, res) => {
   try {
@@ -13,22 +12,24 @@ const listAllBlogs = async (req, res) => {
     const category = req.query.category || "";
     const tag = req.query.tag || "";
 
+    let categoryFilter = {};
     if (category) {
-      let cat_items = await Category.findOne({
-        name: category,
-      });
+      const catItem = await Category.findOne({ name: category });
 
-      if (!cat_items)
+      if (!catItem) {
         return res.status(400).json({
           message: "Category not found",
         });
+      }
+
+      categoryFilter = { categories: catItem._id };
     }
 
     const searchQuery = {
       title: { $regex: search, $options: "i" },
-      ...(status && { status: status }),
-      // ...(category && { categories: category }),
+      ...(status && { status }),
       ...(tag && { tags: tag }),
+      ...categoryFilter,
     };
 
     const blogs = await Blog.find(searchQuery)
