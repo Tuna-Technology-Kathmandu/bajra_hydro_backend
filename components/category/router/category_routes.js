@@ -10,7 +10,7 @@ const getSingleCategory = require("../controllers/get_single_category");
 const updateCategory = require("../controllers/update_category");
 const deleteCategory = require("../controllers/delete_category");
 
-router.post("/", verifyToken, checkRole("admin", "editor"), createCategory);
+router.post("/",  createCategory);
 
 router.get("/", listAllCategories);
 
