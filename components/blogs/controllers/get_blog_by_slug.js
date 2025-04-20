@@ -1,5 +1,4 @@
 const Blog = require("../models/blog_model");
-const Category = require("../../category/models/category_model");
 
 const getBlogBySlug = async (req, res) => {
   try {
