@@ -10,10 +10,10 @@ const updateMissionVision = require("../controllers/update_mision_vision");
 const deleteMissionVision = require("../controllers/delete_mission_vision");
 const getSingleMissionVison = require("../controllers/get_single_mission_vision");
 
-router.post("/", verifyToken, checkRole("admin", "editor"), createMissionVision);
+router.post("/",  createMissionVision);
 router.get("/", listMissionVision);
 router.put("/:id", verifyToken, checkRole("admin", "editor"),updateMissionVision);
-router.delete("/:id", verifyToken, checkRole("admin"), deleteMissionVision);
+router.delete("/:id",  deleteMissionVision);
 router.get("/:id", getSingleMissionVison);
 
 
