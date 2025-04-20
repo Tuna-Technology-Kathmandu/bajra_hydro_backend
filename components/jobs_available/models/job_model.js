@@ -1,40 +1,82 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const jobSchema = new mongoose.Schema(
+const vacancySchema = new Schema(
   {
-    category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category',
-      required: true,
-    },
-    career_level: {
+    title: {
       type: String,
-      enum: ['Entry Level', 'Mid Level', 'Junior Level', 'Senior Level'],
+      required: true,
+      trim: true,
     },
-
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+      index: true,
+    },
     description: {
       type: String,
       required: true,
     },
-
-    deadline: {
-      type: Date,
+    level: {
+      type: String,
       required: true,
+      trim: true,
+      enum: [
+        "Entry-Level",
+        "Mid-Level",
+        "Senior-Level",
+        "Manager",
+        "Executive",
+      ],
     },
-
     no_of_vacancy: {
       type: Number,
       required: true,
       min: 1,
+      default: 1,
+    },
+    location: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    job_type: {
+      type: String,
+      required: true,
+      trim: true,
+      enum: ["Full-time", "Part-time", "Contract", "Temporary", "Internship"],
     },
 
-    status: {
+    salary: {
       type: String,
-      enum: ['pending', 'approved'],
-      default: 'pending',
+      trim: true,
+    },
+    requirements: {
+      type: [String],
+      default: [],
+    },
+    benefits: {
+      type: [String],
+      default: [],
+    },
+    application_deadline: {
+      type: Date,
+    },
+    posted_date: {
+      type: Date,
+      default: Date.now,
+    },
+    is_active: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Job', jobSchema);
+const Vacancy = mongoose.model("Vacancy", vacancySchema);
+
+module.exports = Vacancy;

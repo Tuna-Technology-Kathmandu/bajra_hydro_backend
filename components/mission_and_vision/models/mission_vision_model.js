@@ -3,9 +3,7 @@ const mongoose = require("mongoose");
 const missionVisionSchema = new mongoose.Schema(
   {
     mission: { type: [String], required: true },
-    mission_description: { type: String, required: true },
     vision: { type: [String], required: true },
-    vision_description: { type: String, required: true },
   },
   { timestamps: true }
 );
