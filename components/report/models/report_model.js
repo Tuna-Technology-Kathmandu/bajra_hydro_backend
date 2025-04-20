@@ -13,7 +13,7 @@ const reportSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    fiscal_year: {
+    fiscalYear: {
       type: String,
       required: true,
       match: [/^\d{4}\/\d{2}$/, "Fiscal year must be in format YYYY/YY"], 
