@@ -18,6 +18,11 @@ const updateCategory = async (req, res) => {
 
     category.name = value.name;
     category.slug = slugify(value.name, { lower: true });
+
+    if (value.sub_category) {
+      category.sub_category = value.sub_category;
+    }
+
     await category.save();
 
     return res.status(200).json({

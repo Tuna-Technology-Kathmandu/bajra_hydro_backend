@@ -53,6 +53,14 @@ router.use("/ceo-message", ceoMessageRoutes);
 const subscriberRoutes = require("../components/subscriber/routers/subscriber_routes.js");
 router.use("/subscribers", subscriberRoutes);
 
+// Mission and Vision Routes
+const missionVisionRoutes = require("../components/mission_and_vision/routers/mission_vision_routes.js");
+router.use("/mission-vision", missionVisionRoutes);
+
+// Company Information Routes
+const companyInfoRoutes = require("../components/company_information/routers/company_info_routes.js");
+router.use("/company-info", companyInfoRoutes);
+
 // Base route check
 router.get("/", (req, res) => {
   res.send("API is running...");
