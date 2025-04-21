@@ -32,6 +32,8 @@ const teamValidator = Joi.object({
   photoUrl: Joi.string().uri().allow("").messages({
     "string.uri": "Photo must be a valid URL",
   }),
+  display_position: Joi.number().default(0),
+  status: Joi.string().valid("pending", "approved").default("pending"),
 });
 
 module.exports = teamValidator;

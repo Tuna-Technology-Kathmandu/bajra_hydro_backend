@@ -31,6 +31,10 @@ const teamSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    display_position: {
+      type: Number,
+      default: 0,
+    },
     status: {
       type: String,
       enum: ["pending", "approved"],
