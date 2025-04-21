@@ -1,3 +1,4 @@
+const { ref } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -15,6 +16,11 @@ const vacancySchema = new Schema(
       trim: true,
       lowercase: true,
       index: true,
+    },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
     },
     description: {
       type: String,
