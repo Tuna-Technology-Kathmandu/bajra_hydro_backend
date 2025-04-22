@@ -1,4 +1,6 @@
 const Job = require("../models/job_model");
+const CategoryModel = require("../../category/models/category_model");
+const mongoose = require("mongoose");
 
 const listAllJobs = async (req, res) => {
   try {
@@ -7,39 +9,43 @@ const listAllJobs = async (req, res) => {
     const skip = (page - 1) * limit;
     const sortOrder = req.query.sort === "asc" ? 1 : -1;
 
-    const categoryName = req.query.category || "";
-    const subCategory = req.query.subCategory || "";
-    const careerLevel = req.query.careerLevel || "";
+    const query = {};
 
-    const searchQuery = {};
+    const category = req.query.category;
+    if (category) {
+      const catResponse = await CategoryModel.findOne({
+        name: { $regex: new RegExp(`^${category}$`, "i") },
+      });
 
-    if (careerLevel) {
-      searchQuery.career_level = { $regex: careerLevel, $options: "i" };
+      if (!catResponse) {
+        return res.status(404).json({ message: "Category not found" });
+      }
+
+      query.category = catResponse._id;
     }
 
-    let jobs = await Job.find(searchQuery)
-      .populate("category") 
+    const level = req.query.level;
+    if (level) {
+      query.level = { $regex: new RegExp(`^${level}$`, "i") };
+    }
+
+    const jobType = req.query.job_type;
+    if (jobType) {
+      query.job_type = { $regex: new RegExp(`^${jobType}$`, "i") };
+    }
+
+    const totalJobs = await Job.countDocuments(query);
+
+    const jobs = await Job.find(query)
+      .populate("category")
       .sort({ createdAt: sortOrder })
+      .skip(skip)
+      .limit(limit)
       .lean();
-
-    if (categoryName) {
-      jobs = jobs.filter(job =>
-        job.category?.name?.toLowerCase().includes(categoryName.toLowerCase())
-      );
-    }
-
-    if (subCategory) {
-      jobs = jobs.filter(job =>
-        job.category?.sub_category?.toLowerCase().includes(subCategory.toLowerCase())
-      );
-    }
-
-    const totalJobs = jobs.length;
-    const paginatedJobs = jobs.slice(skip, skip + limit);
 
     return res.status(200).json({
       message: "Jobs fetched successfully",
-      jobs: paginatedJobs,
+      jobs,
       pagination: {
         currentPage: page,
         totalJobs,

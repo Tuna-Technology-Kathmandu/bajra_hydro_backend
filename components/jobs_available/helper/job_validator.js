@@ -15,7 +15,7 @@ const vacancyValidationSchema = Joi.object({
   level: Joi.string()
     .valid("Entry-Level", "Mid-Level", "Senior-Level", "Manager", "Executive")
     .required(),
-  no_of_vacancy: Joi.number().integer().min(1).default(1),
+  no_of_vacancy: Joi.number().required().integer().min(1).default(1),
   location: Joi.string().trim().required(),
   job_type: Joi.string()
     .valid("Full-time", "Part-time", "Contract", "Temporary", "Internship")
