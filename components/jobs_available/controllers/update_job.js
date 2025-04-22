@@ -16,8 +16,6 @@ const updateJob = async (req, res) => {
     }
 
     job.set({ ...value });
-    
-    job.status = "pending";  
 
     await job.save();
 
