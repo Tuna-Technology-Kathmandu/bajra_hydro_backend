@@ -34,6 +34,21 @@ const listAllJobs = async (req, res) => {
       query.job_type = { $regex: new RegExp(`^${jobType}$`, "i") };
     }
 
+    const search = req.query.search;
+    if (search) {
+      const catMatches = await CategoryModel.find({
+        name: { $regex: new RegExp(search, "i") },
+      });
+    
+      const categoryIds = catMatches.map((cat) => cat._id);
+    
+      query.$or = [
+        { level: { $regex: new RegExp(search, "i") } },
+        { job_type: { $regex: new RegExp(search, "i") } },
+        { category: { $in: categoryIds } },
+      ];
+    }
+
     const totalJobs = await Job.countDocuments(query);
 
     const jobs = await Job.find(query)
