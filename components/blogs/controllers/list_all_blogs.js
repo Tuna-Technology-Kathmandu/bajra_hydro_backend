@@ -12,17 +12,14 @@ const listAllBlogs = async (req, res) => {
     const status = req.query.status || "";
     const category = req.query.category || "";
     const tag = req.query.tag || "";
+    const is_featured = req.query.is_featured; 
 
     let categoryFilter = {};
     if (category) {
       const catItem = await Category.findOne({ name: category });
-
       if (!catItem) {
-        return res.status(400).json({
-          message: "Category not found",
-        });
+        return res.status(400).json({ message: "Category not found" });
       }
-
       categoryFilter = { categories: catItem._id };
     }
 
@@ -30,6 +27,7 @@ const listAllBlogs = async (req, res) => {
       title: { $regex: search, $options: "i" },
       ...(status && { status }),
       ...(tag && { tags: tag }),
+      ...(is_featured !== undefined && { is_featured: is_featured === "true" }), 
       ...categoryFilter,
     };
 
