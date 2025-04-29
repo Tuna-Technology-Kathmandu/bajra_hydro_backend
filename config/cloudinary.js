@@ -15,7 +15,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: "bajra-blogs", 
+    folder: "bajra_energy_ventures", 
     allowed_formats: ["jpg", "jpeg", "png", "webp", "pdf", "svg"],
   },
 });

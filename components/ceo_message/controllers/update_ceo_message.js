@@ -18,7 +18,8 @@ const updateCEOMessage = async (req, res) => {
     ceoMessage.name = value.name || ceoMessage.name;
     ceoMessage.description = value.description || ceoMessage.description;
     ceoMessage.status = value.status || ceoMessage.status;
-    
+    ceoMessage.position = value.position || ceoMessage.position;
+
     if (req.file) {
       ceoMessage.photo = req.file?.path;
     }
