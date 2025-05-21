@@ -5,16 +5,16 @@ const router = express.Router();
 const verifyToken = require("../../../middleware/verify_token");
 const checkRole = require("../../../middleware/check_role");
 
-const { createGallery, upload } = require("../controllers/create_gallery");
-const { updateGallery } = require("../controllers/update_gallery");
+const { createPopup, upload } = require("../controllers/create_popup");
+const { updatPopup } = require("../controllers/update_popup");
 const listAllPopup = require("../controllers/list_popup");
-const getSingleGallery = require("../controllers/get_single_gallery");
-const deleteGallery = require("../controllers/delete_gallery");
+const getSinglePopup = require("../controllers/get_single_popup");
+const deletePopup = require("../controllers/delete_popup");
 
-router.post("/", verifyToken, checkRole("admin", "editor"), upload.single("image"), createGallery);
-router.put("/:id", verifyToken, checkRole("admin", "editor"), upload.single("image"), updateGallery);
+router.post("/", verifyToken, checkRole("admin", "editor"), upload.single("image"), createPopup);
+router.put("/:id", verifyToken, checkRole("admin", "editor"), upload.single("image"), updatPopup);
 router.get("/", listAllPopup);
-router.get("/:id", getSingleGallery);
-router.delete("/:id", verifyToken, checkRole("admin", "editor"), deleteGallery);
+router.get("/:id", getSinglePopup);
+router.delete("/:id", verifyToken, checkRole("admin", "editor"), deletePopup);
 
 module.exports = router;
