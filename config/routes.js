@@ -61,6 +61,10 @@ router.use("/mission-vision", missionVisionRoutes);
 const companyInfoRoutes = require("../components/company_information/routers/company_info_routes.js");
 router.use("/company-info", companyInfoRoutes);
 
+// Gallery Routes
+const galleryRoutes = require("../components/gallery/routers/gallery_routes.js");
+router.use("/gallery", galleryRoutes);
+
 // Base route check
 router.get("/", (req, res) => {
   res.send("API is running...");
