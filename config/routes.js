@@ -65,6 +65,10 @@ router.use("/company-info", companyInfoRoutes);
 const galleryRoutes = require("../components/gallery/routers/gallery_routes.js");
 router.use("/gallery", galleryRoutes);
 
+// CV Routes
+const cvRoutes = require("../components/cv/routers/cv_routes.js");
+router.use("/cv", cvRoutes);
+
 // Base route check
 router.get("/", (req, res) => {
   res.send("API is running...");
