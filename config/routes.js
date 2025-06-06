@@ -65,9 +65,15 @@ router.use("/company-info", companyInfoRoutes);
 const galleryRoutes = require("../components/gallery/routers/gallery_routes.js");
 router.use("/gallery", galleryRoutes);
 
+<<<<<<< HEAD
 // Popup Routes
 const popupRoutes = require("../components/popup/routers/popup_routes.js");
 router.use("/popup", popupRoutes);
+=======
+// CV Routes
+const cvRoutes = require("../components/cv/routers/cv_routes.js");
+router.use("/cv", cvRoutes);
+>>>>>>> abishek
 
 // Base route check
 router.get("/", (req, res) => {
