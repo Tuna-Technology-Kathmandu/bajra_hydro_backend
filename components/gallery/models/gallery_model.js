@@ -5,14 +5,6 @@ const gallerySchema = new mongoose.Schema(
     title: {
       type: String,
       required: [true, "Title is required"],
-<<<<<<< HEAD
-      trim: true,
-    },
-    image: {
-      type: String,
-      required: [true, "Image is required"],
-      trim: true,
-=======
       unique: true,
       trim: true,
     },
@@ -35,7 +27,6 @@ const gallerySchema = new mongoose.Schema(
       type: String,
       trim: true,
       default: null, 
->>>>>>> abishek
     },
     status: {
       type: String,
@@ -46,8 +37,6 @@ const gallerySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-<<<<<<< HEAD
-=======
 gallerySchema.pre("save", function (next) {
   if (this.video_url) {
     const match = this.video_url.match(
@@ -58,5 +47,4 @@ gallerySchema.pre("save", function (next) {
   next();
 });
 
->>>>>>> abishek
 module.exports = mongoose.model("Gallery", gallerySchema);

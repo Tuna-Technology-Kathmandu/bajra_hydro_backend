@@ -8,15 +8,6 @@ const createGallery = async (req, res) => {
   try {
     const { error, value } = galleryValidation.validate(req.body);
     if (error) {
-<<<<<<< HEAD
-      return res.status(400).json({ message: error.details[0].message });
-    }
-
-    const image = req.file?.path;  
-
-    if (!image) {
-      return res.status(400).json({ message: "Image is required." });
-=======
       return res.status(400).json({
         message: `Validation Error: ${error.details[0].message}`,
       });
@@ -57,34 +48,21 @@ const createGallery = async (req, res) => {
           message: "Validation Error: 'video_url' should be empty when type is 'image'.",
         });
       }
->>>>>>> abishek
     }
 
     const newGallery = new Gallery({
       ...value,
-<<<<<<< HEAD
-      image: image,   
-=======
       image,
->>>>>>> abishek
     });
 
     await newGallery.save();
 
     return res.status(201).json({
-<<<<<<< HEAD
-      message: "Gallery created successfully",
-=======
       message: "Gallery created successfully.",
->>>>>>> abishek
       gallery: newGallery,
     });
   } catch (err) {
     console.error("Create Gallery Error:", err);
-<<<<<<< HEAD
-    return res.status(500).json({
-      message: "Server error while creating gallery",
-=======
 
     if (err.code === 11000 && err.keyPattern?.title) {
       return res.status(409).json({
@@ -94,7 +72,6 @@ const createGallery = async (req, res) => {
 
     return res.status(500).json({
       message: "Internal Server Error: Unable to create gallery.",
->>>>>>> abishek
     });
   }
 };

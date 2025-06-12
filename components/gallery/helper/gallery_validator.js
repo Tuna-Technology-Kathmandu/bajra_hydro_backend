@@ -6,14 +6,6 @@ const galleryValidation = Joi.object({
     "string.min": "Title must be at least 5 characters",
     "string.max": "Title must not exceed 100 characters",
   }),
-<<<<<<< HEAD
-  status: Joi.string().valid("pending", "approved").default("pending").messages({
-    "string.valid": "Status must be either 'pending' or 'approved'",
-  }),
-});
-
-module.exports = galleryValidation;
-=======
   type: Joi.string().valid("image", "video").required().messages({
     "any.only": "Type must be either 'image' or 'video'",
     "string.empty": "Type is required",
@@ -34,4 +26,3 @@ module.exports = galleryValidation;
 });
 
 module.exports = galleryValidation;
->>>>>>> abishek
