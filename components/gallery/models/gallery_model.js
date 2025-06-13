@@ -18,15 +18,15 @@ const gallerySchema = new mongoose.Schema(
       trim: true,
       default: null,
     },
-      video_url: {
+    video_url: {
       type: String,
       trim: true,
-      default: null, 
+      default: null,
     },
     video_id: {
       type: String,
       trim: true,
-      default: null, 
+      default: null,
     },
     status: {
       type: String,
