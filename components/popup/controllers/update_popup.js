@@ -1,7 +1,7 @@
 const Popup = require("../models/popup_models");
 const popupValidation = require("../helper/popup_validator");
 
-const updatPopup = async (req, res) => {
+const updatePopup = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -15,25 +15,17 @@ const updatPopup = async (req, res) => {
       return res.status(404).json({ message: "Popup not found" });
     }
 
-    const updatedData = {};
+    Object.assign(popup, value); 
 
-    if (value && value.title) {
-      updatedData.title = value.title;
+    if (req.file?.path) {
+      popup.image = req.file.path;
     }
-
-    const image = req.file?.path; 
-
-    if (image) {
-      updatedData.image = image; 
-    }
-
-    Object.assign(popup, updatedData);
 
     await popup.save();
 
     return res.status(200).json({
       message: "Popup updated successfully",
-      gallery,
+      popup,
     });
   } catch (err) {
     console.error("Update Popup Error:", err.message);
@@ -43,4 +35,4 @@ const updatPopup = async (req, res) => {
   }
 };
 
-module.exports = { updatPopup };
+module.exports = { updatePopup };

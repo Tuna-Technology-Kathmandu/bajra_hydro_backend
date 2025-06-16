@@ -69,6 +69,10 @@ router.use("/gallery", galleryRoutes);
 const cvRoutes = require("../components/cv/routers/cv_routes.js");
 router.use("/cv", cvRoutes);
 
+// Popup Routes
+const popupRoutes = require("../components/popup/routers/popup_routes.js");
+router.use("/popup", popupRoutes);
+
 // Base route check
 router.get("/", (req, res) => {
   res.send("API is running...");

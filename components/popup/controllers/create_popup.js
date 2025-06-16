@@ -26,7 +26,7 @@ const createPopup = async (req, res) => {
 
     return res.status(201).json({
       message: "Popup created successfully",
-      gallery: newGallery,
+      popup: newPopup,
     });
   } catch (err) {
     console.error("Create Popup Error:", err);
