@@ -43,6 +43,7 @@ const listAllJobs = async (req, res) => {
       const categoryIds = catMatches.map((cat) => cat._id);
     
       query.$or = [
+        { title: { $regex: new RegExp(search, "i") } }, 
         { level: { $regex: new RegExp(search, "i") } },
         { job_type: { $regex: new RegExp(search, "i") } },
         { category: { $in: categoryIds } },
