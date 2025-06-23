@@ -5,7 +5,6 @@ const getBlogBySlug = async (req, res) => {
     const { slug } = req.params;
 
     const blog = await Blog.findOne({ slug })
-      .populate("author", "fullname email")
       .populate("categories", "name slug _id") 
       .populate("tags", "name slug");
 
@@ -17,8 +16,8 @@ const getBlogBySlug = async (req, res) => {
       _id: { $ne: blog._id },
       categories: blog.categories._id
     })
-      .populate("author", "fullname")
       .populate("categories", "name slug")
+      .populate("tags", "name slug")
       .limit(3);
 
     return res.status(200).json({ blog, recommendations });
